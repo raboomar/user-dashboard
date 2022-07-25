@@ -8,6 +8,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import UsersList from "./UsersList";
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 const Grid = () => {
@@ -47,7 +48,7 @@ const Grid = () => {
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
           >
-            hiii
+            <UsersList />
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}> By Rami Aboomar 2022</Footer>
