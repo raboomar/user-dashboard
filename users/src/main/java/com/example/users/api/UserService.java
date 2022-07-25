@@ -1,5 +1,6 @@
 package com.example.users.api;
 
+import com.example.users.exception.BadRequestException;
 import com.example.users.users.Gender;
 import com.example.users.users.User;
 import lombok.AllArgsConstructor;
@@ -15,10 +16,15 @@ public class UserService {
 
     public List<User> getUsers() {
         return userRepository.findAll();
-//        return List.of(new User(1L,"rami","rami@gmail", Gender.MALE));
     }
 
     public void addUser(User user) {
+     Boolean emailExist = userRepository.existsByEmail(user.getEmail());
+     if (emailExist){
+         throw new BadRequestException(
+                 user.getEmail() + " is taken"
+         );
+     }
         userRepository.save(user);
     }
 }
