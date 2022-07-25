@@ -32,4 +32,10 @@ public class UserController {
     public void deleteUser (@PathVariable("id") Long id){
         userService.deleteUser(id);
     }
+
+    @CrossOrigin
+    @PutMapping(path="/edit/{id}")
+    public void editUser (@PathVariable("id") Long id, @RequestBody User user){
+        userService.editUser(id, user);
+    }
 }
