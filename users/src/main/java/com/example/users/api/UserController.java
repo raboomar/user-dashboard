@@ -26,4 +26,10 @@ public class UserController {
     public void addUser (@RequestBody User user){
         userService.addUser(user);
     }
+
+    @CrossOrigin
+    @DeleteMapping(path = "/{id}")
+    public void deleteUser (@PathVariable("id") Long id){
+        userService.deleteUser(id);
+    }
 }
