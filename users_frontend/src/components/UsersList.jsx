@@ -1,6 +1,10 @@
 import React from "react";
 import { Space, Table, Tag, Button, Popconfirm } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { getUsers } from "../redux/userSlice";
 const { Column, ColumnGroup } = Table;
+
 const data = [
   {
     key: "1",
@@ -59,7 +63,20 @@ const columns = [
   },
 ];
 const UsersList = () => {
-  return <Table dataSource={data} columns={columns} />;
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.users);
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
+
+  const renderTable = () => {
+    if (users.length === 0) return <div>loadding....</div>;
+    else {
+      return <Table dataSource={data} columns={columns} />;
+    }
+  };
+  return <div> {renderTable()}</div>;
 };
 
 export default UsersList;
