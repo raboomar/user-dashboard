@@ -15,10 +15,14 @@ import java.util.List;
 @RequestMapping(path = "api/v1/users")
 @AllArgsConstructor
 public class UserController {
+    private final UserService userService;
+
 
     @CrossOrigin
     @GetMapping
     public List<User> getUsers(){
-        return List.of(new User(1L,"rami","rami@gmail", Gender.MALE));
+        return userService.getUsers();
+
+//        return List.of(new User(1L,"rami","rami@gmail", Gender.MALE));
     }
 }
