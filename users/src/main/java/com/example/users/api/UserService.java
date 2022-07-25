@@ -17,4 +17,8 @@ public class UserService {
         return userRepository.findAll();
 //        return List.of(new User(1L,"rami","rami@gmail", Gender.MALE));
     }
+
+    public void addUser(User user) {
+        userRepository.save(user);
+    }
 }
