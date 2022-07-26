@@ -3,7 +3,7 @@ import { Table, Button, Popconfirm } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getUsers } from "../redux/userSlice";
-
+import { PlusOutlined } from "@ant-design/icons";
 const columns = [
   {
     title: "Id",
@@ -59,15 +59,30 @@ const UsersList = () => {
     if (users.length === 0) return <div>loadding....</div>;
     else {
       return (
-        <Table
-          dataSource={users}
-          columns={columns}
-          rowKey={(user) => user.id}
-        />
+        <>
+          <Table
+            dataSource={users}
+            columns={columns}
+            rowKey={(user) => user.id}
+          />
+        </>
       );
     }
   };
-  return <div> {renderTable()}</div>;
+  return (
+    <div>
+      <Button
+        onClick={() => console.log("hiiiiiiiiiiiiii")}
+        size="small"
+        style={{ margin: 10, display: "flex" }}
+        shape="round"
+        type="primary"
+      >
+        Add User
+      </Button>
+      {renderTable()}
+    </div>
+  );
 };
 
 export default UsersList;
