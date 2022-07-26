@@ -1,24 +1,9 @@
 import React from "react";
-import { Space, Table, Tag, Button, Popconfirm } from "antd";
+import { Table, Button, Popconfirm } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getUsers } from "../redux/userSlice";
-const { Column, ColumnGroup } = Table;
 
-const data = [
-  {
-    key: "1",
-    name: "Mike",
-    age: 32,
-    address: "10 Downing Street",
-  },
-  {
-    key: "2",
-    name: "John",
-    age: 42,
-    address: "10 Downing Street",
-  },
-];
 const columns = [
   {
     title: "Id",
@@ -73,7 +58,13 @@ const UsersList = () => {
   const renderTable = () => {
     if (users.length === 0) return <div>loadding....</div>;
     else {
-      return <Table dataSource={data} columns={columns} />;
+      return (
+        <Table
+          dataSource={users}
+          columns={columns}
+          rowKey={(user) => user.id}
+        />
+      );
     }
   };
   return <div> {renderTable()}</div>;
