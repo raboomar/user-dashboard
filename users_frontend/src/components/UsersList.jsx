@@ -1,67 +1,106 @@
 import React from "react";
-import { Table, Button, Popconfirm } from "antd";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { getUsers } from "../redux/userSlice";
-import { PlusOutlined } from "@ant-design/icons";
-const columns = [
-  {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-  },
+import { Table, Button, Popconfirm, Empty } from "antd";
+// import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+// import { getUsers } from "../redux/userSlice";
 
-  {
-    title: "Gender",
-    dataIndex: "gender",
-    key: "gender",
-  },
-  {
-    title: "Actions",
-    dataIndex: "",
-    key: "x",
+import UserForm from "./UserForm";
+import { deleteUser, getAllUsers } from "../client/client";
+import Loading from "./Loading";
+import { success } from "./notification";
 
-    render: (student) => (
-      <>
-        <Popconfirm
-          placement="topLeft"
-          title={`Do you want to delete ${student.name}`}
-          onConfirm={() => console.log("hiii")}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button value="Delete">Delete</Button>
-        </Popconfirm>
-        <Button value="Edit">Edit</Button>
-      </>
-    ),
-  },
-];
 const UsersList = () => {
-  const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.users);
+  const [fetching, setFetching] = useState(true);
+  const [showDrawer, setShowDrawer] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+  // const dispatch = useDispatch();
+  // const { users } = useSelector((state) => state.users);
+
+  const fetchUsers = () => {
+    getAllUsers().then((res) => {
+      setAllUsers(res.data);
+      setFetching(false);
+    });
+  };
+
+  const confirm = (user) => {
+    deleteUser(user.id).then(() => {
+      success("User Removed", `${user.name} has been removed`);
+      fetchUsers();
+    });
+  };
 
   useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
+    fetchUsers();
+  }, []);
+
+  const columns = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+    },
+    {
+      title: "Actions",
+      dataIndex: "",
+      key: "x",
+
+      render: (user) => (
+        <>
+          <Popconfirm
+            placement="topLeft"
+            title={`Do you want to delete ${user.name}`}
+            onConfirm={() => confirm(user)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button value="Delete">Delete</Button>
+          </Popconfirm>
+          <Button value="Edit">Edit</Button>
+        </>
+      ),
+    },
+  ];
 
   const renderTable = () => {
-    if (users.length === 0) return <div>loadding....</div>;
-    else {
+    if (fetching) return <Loading />;
+    if (allUsers.length === 0) {
       return (
         <>
+          <UserForm
+            showDrawer={showDrawer}
+            setShowDrawer={setShowDrawer}
+            fetchData={fetchUsers}
+          />
+          <Empty />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <UserForm
+            showDrawer={showDrawer}
+            setShowDrawer={setShowDrawer}
+            fetchData={fetchUsers}
+          />
           <Table
-            dataSource={users}
+            dataSource={allUsers}
             columns={columns}
             rowKey={(user) => user.id}
           />
@@ -72,7 +111,7 @@ const UsersList = () => {
   return (
     <div>
       <Button
-        onClick={() => console.log("hiiiiiiiiiiiiii")}
+        onClick={() => setShowDrawer(!showDrawer)}
         size="small"
         style={{ margin: 10, display: "flex" }}
         shape="round"
