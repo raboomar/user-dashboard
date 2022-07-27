@@ -3,16 +3,20 @@ import { Table, Button, Popconfirm, Empty } from "antd";
 // import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 // import { getUsers } from "../redux/userSlice";
-
+import { useNavigate } from "react-router-dom";
 import UserForm from "./UserForm";
 import { deleteUser, getAllUsers } from "../client/client";
 import Loading from "./Loading";
 import { success } from "./notification";
+import EditModal from "./EditModal";
 
 const UsersList = () => {
+  let navigate = useNavigate();
   const [fetching, setFetching] = useState(true);
   const [showDrawer, setShowDrawer] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
   // const dispatch = useDispatch();
   // const { users } = useSelector((state) => state.users);
 
@@ -72,7 +76,16 @@ const UsersList = () => {
           >
             <Button value="Delete">Delete</Button>
           </Popconfirm>
-          <Button value="Edit">Edit</Button>
+          <Button
+            value="Edit"
+            onClick={() => {
+              navigate(`/edit/${user.id}`);
+              // setVisible(true);
+              // setCurrentUser(user);
+            }}
+          >
+            Edit
+          </Button>
         </>
       ),
     },
@@ -94,6 +107,12 @@ const UsersList = () => {
     } else {
       return (
         <>
+          <EditModal
+            visible={visible}
+            setVisible={setVisible}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
           <UserForm
             showDrawer={showDrawer}
             setShowDrawer={setShowDrawer}

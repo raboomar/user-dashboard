@@ -1,13 +1,31 @@
+import React from "react";
 import { Button, Col, Drawer, Form, Input, Row, Select, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { addNewUser } from "../client/client";
 import { success, error } from "./notification";
+import { useForm } from "antd/lib/form/Form";
+import { useEffect } from "react";
 const { Option } = Select;
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+const EditUserForm = ({
+  showDrawer,
+  setShowDrawer,
+  fetchData,
+  currentUser,
+  setCurrentUser,
+}) => {
+  const [usersEmail, setUserEmail] = useState("hiiii");
+  const onCLose = () => {
+    setShowDrawer(false);
+    setCurrentUser({});
+  };
 
-function UserForm({ showDrawer, setShowDrawer, fetchData }) {
-  const onCLose = () => setShowDrawer(false);
+  useEffect(() => {
+    setUserEmail(currentUser.email);
+  }, []);
+
+  console.log(currentUser);
   const [submitting, setSubmitting] = useState(false);
   const onFinish = (values) => {
     setSubmitting(true);
@@ -31,7 +49,7 @@ function UserForm({ showDrawer, setShowDrawer, fetchData }) {
 
   return (
     <Drawer
-      title="Add New User"
+      title="Edit User"
       width={720}
       onClose={onCLose}
       visible={showDrawer}
@@ -60,8 +78,9 @@ function UserForm({ showDrawer, setShowDrawer, fetchData }) {
               name="name"
               label="Name"
               rules={[{ required: true, message: "Please enter name" }]}
+              initialValue={currentUser.name}
             >
-              <Input placeholder="Please enter name" value="billll" />
+              <Input type="text" placeholder="Please enter name" />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -69,6 +88,7 @@ function UserForm({ showDrawer, setShowDrawer, fetchData }) {
               name="email"
               label="Email"
               rules={[{ required: true, message: "Please enter email" }]}
+              initialValue={usersEmail}
             >
               <Input placeholder="Please enter email" />
             </Form.Item>
@@ -80,6 +100,7 @@ function UserForm({ showDrawer, setShowDrawer, fetchData }) {
               name="gender"
               label="gender"
               rules={[{ required: true, message: "Please select a gender" }]}
+              initialValue={currentUser.gender}
             >
               <Select placeholder="Please select a gender">
                 <Option value="MALE">MALE</Option>
@@ -102,6 +123,6 @@ function UserForm({ showDrawer, setShowDrawer, fetchData }) {
       </Form>
     </Drawer>
   );
-}
+};
 
-export default UserForm;
+export default EditUserForm;
