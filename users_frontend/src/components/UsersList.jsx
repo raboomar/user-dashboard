@@ -8,13 +8,12 @@ import UserForm from "./UserForm";
 import { deleteUser, getAllUsers } from "../client/client";
 import Loading from "./Loading";
 import { success } from "./notification";
-import EditModal from "./EditModal";
 
 const UsersList = () => {
   let navigate = useNavigate();
   const [fetching, setFetching] = useState(true);
   const [showDrawer, setShowDrawer] = useState(false);
-  const [visible, setVisible] = useState(false);
+
   const [allUsers, setAllUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   // const dispatch = useDispatch();
@@ -107,12 +106,6 @@ const UsersList = () => {
     } else {
       return (
         <>
-          <EditModal
-            visible={visible}
-            setVisible={setVisible}
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser}
-          />
           <UserForm
             showDrawer={showDrawer}
             setShowDrawer={setShowDrawer}

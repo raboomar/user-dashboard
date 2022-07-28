@@ -9,6 +9,14 @@ export const getAllUsers = async () => {
   }
 };
 
+export const getUser = async (id) => {
+  try {
+    return axios.get(`${url}${id}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const addNewUser = async (user) => {
   try {
     let data = JSON.stringify(user);
@@ -29,6 +37,24 @@ export const addNewUser = async (user) => {
 export const deleteUser = async (id) => {
   try {
     axios.delete(`${url}${id}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const editUser = async (user, id) => {
+  try {
+    let data = JSON.stringify(user);
+    let config = {
+      method: "put",
+      url: `${url}edit/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    await axios(config);
   } catch (error) {
     console.log(error);
   }
