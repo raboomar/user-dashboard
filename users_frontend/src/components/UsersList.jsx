@@ -28,14 +28,14 @@ const UsersList = () => {
 
   const confirm = (user) => {
     deleteUser(user.id).then(() => {
-      success("User Removed", `${user.name} has been removed`);
       fetchUsers();
+      success("User Removed", `${user.name} has been removed`);
     });
   };
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [allUsers]);
 
   const columns = [
     {
