@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "http://useradmin-env.eba-thjvip35.us-east-1.elasticbeanstalk.com/";
+const url = "https://userdashboardapi.com/";
 
 export const getAllUsers = async () => {
   try {
