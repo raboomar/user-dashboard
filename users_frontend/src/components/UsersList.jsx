@@ -35,7 +35,7 @@ const UsersList = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [allUsers]);
+  }, []);
 
   const columns = [
     {
